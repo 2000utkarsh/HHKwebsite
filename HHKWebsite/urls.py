@@ -22,8 +22,11 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.HomePage.as_view(), name='home'),
     path('accounts/', include('accounts.urls', namespace = 'accounts')),
+    path('schools/', include('schools.urls', namespace = 'schools')),
 	path('accounts/', include('django.contrib.auth.urls')),
-	path('welcome/',views.WelcomePage.as_view(),name='welcome'),
+	path('emails/', include('emails.urls', namespace='emails')),
+    path('welcome/',views.WelcomePage.as_view(),name='welcome'),
+
     path('thanks/',views.ThanksPage.as_view(),name='thanks'),
 
 

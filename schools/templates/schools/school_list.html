@@ -1,0 +1,12 @@
+{% extends "schools/school_base.html" %}
+
+
+{% block school_content %}
+	<ul>
+		{% for school in school_list %}
+			<li>
+	  			<p>{{school.reg_code}}: {{school.name}}</p>
+	  		</li>
+		{% endfor %}
+	</ul>
+{% endblock %}

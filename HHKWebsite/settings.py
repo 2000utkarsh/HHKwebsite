@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'accounts',
+    'schools',
+    'emails',
 ]
 
 MIDDLEWARE = [
@@ -123,3 +125,14 @@ STATIC_URL = '/static/'
 
 LOGIN_REDIRECT_URL = 'welcome'
 LOGOUT_REDIRECT_URL = 'thanks'
+
+
+#Emails
+
+
+EMAIL_HOST = 'smtp.mail.yahoo.com'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'testemaildj@yahoo.com'
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+EMAIL_HOST_PASSWORD = 'password@django'
