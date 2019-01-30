@@ -81,7 +81,8 @@ def create_student(request,pk):
             student = form.save(commit=False)
             student.school = school
             student.save()
-            form = forms.CreateStudentForm()
+            data={'standard':form.cleaned_data['standard'],'section':form.cleaned_data['section']}
+            form = forms.CreateStudentForm(initial=data)
             return render(request,'schools/create_student_form.html',{'form':form})
     else:
         form = forms.CreateStudentForm()
