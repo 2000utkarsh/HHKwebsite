@@ -6,6 +6,13 @@
 		{% for school in school_list %}
 			<li>
 	  			<p>{{school.reg_code}}: {{school.name}}</p>
+	  			{% if user.is_authenticated and school.user.username == user.username %}
+	  			<a href="{% url 'schools:update' pk=school.pk  %}">Update</a>
+	  			<a href="{% url 'schools:create_student' pk=school.pk  %}">Add A Student</a>
+	  			{% endif %}
+	  			{% if user.is_authenticated and user.is_superuser %}
+	  				<a href="{% url 'schools:create_student' pk=school.pk  %}">Add A Student</a>
+	  			{% endif %}
 	  		</li>
 		{% endfor %}
 	</ul>

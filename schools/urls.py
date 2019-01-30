@@ -9,4 +9,6 @@ app_name = 'schools'
 urlpatterns = [
 	path('new/', views.CreateSchool.as_view(), name = 'create'),
 	path('list/', views.SchoolList.as_view(), name = 'all'),
+	path('update/<int:pk>/', views.UpdateSchool.as_view(), name = 'update'),
+	path('create_student/<int:pk>', views.create_student, name='create_student'),
 ]

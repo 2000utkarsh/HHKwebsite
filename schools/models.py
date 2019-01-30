@@ -6,7 +6,7 @@ User = get_user_model()
 
 class School(models.Model):
 
-	user = models.OneToOneField(User,on_delete=models.CASCADE)
+	user = models.OneToOneField(User,related_name = 'school', on_delete=models.CASCADE)
 
 	reg_code = models.CharField(max_length=20)
 
@@ -34,6 +34,31 @@ class School(models.Model):
 
 	class Meta():
 		ordering = ['name']
+
+
+class Student(models.Model):
+
+	school = models.ForeignKey('School', related_name='students', on_delete = models.CASCADE)
+
+	roll_no = models.PositiveIntegerField()
+
+	name = models.CharField(max_length=50)
+
+	standard = models.CharField(max_length=3)
+
+	section = models.CharField(max_length=2)
+
+	f_name = models.CharField(max_length=50)
+
+	def __str__(self):
+		return self.name
+
+	def get_absolute_url(self):
+		return reverse('schools:create_student', kwargs = {'username':self.username})
+
+
+
+
 
 
 

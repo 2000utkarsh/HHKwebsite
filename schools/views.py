@@ -1,6 +1,6 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect, get_object_or_404
 
-
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import generic
 from django.urls import reverse_lazy
@@ -46,11 +46,11 @@ class SchoolList(generic.ListView):
 #         )
 
 
-# class UpdateEvent(generic.UpdateView,LoginRequiredMixin):
-#     template_name = 'event/event_form.html'
-#     success_url = reverse_lazy("event:all")
-#     form_class = forms.EventForm
-#     model = models.Event
+class UpdateSchool(generic.UpdateView,LoginRequiredMixin):
+    template_name = 'schools/school_update_form.html'
+    success_url = reverse_lazy("schools:all")
+    form_class = forms.UpdateSchoolForm
+    model = models.School
 
 
 # class DeleteEvent(LoginRequiredMixin, generic.DeleteView):
@@ -64,3 +64,26 @@ class SchoolList(generic.ListView):
 #     def delete(self, *args, **kwargs):
 #         messages.success(self.request, "Event Deleted")
 #         return super().delete(*args, **kwargs)
+
+
+
+######################## STUDENT VIEW ########################
+
+
+
+@login_required
+def create_student(request,pk):
+    school = get_object_or_404(models.School,pk=pk)
+
+    if request.method == 'POST':
+        form = forms.CreateStudentForm(request.POST)
+        if form.is_valid():
+            student = form.save(commit=False)
+            student.school = school
+            student.save()
+            form = forms.CreateStudentForm()
+            return render(request,'schools/create_student_form.html',{'form':form})
+    else:
+        form = forms.CreateStudentForm()
+    return render(request,'schools/create_student_form.html',{'form':form})
+

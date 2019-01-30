@@ -8,4 +8,12 @@ class SchoolAdmin(admin.ModelAdmin):
 	list_filter = ['verified']
 
 
+
+class StudentAdmin(admin.ModelAdmin):
+	list_display = ['roll_no', 'name', 'standard', 'section', 'school']
+	list_filter = ['standard', 'section', 'school']
+
+
 admin.site.register(models.School, SchoolAdmin)
+admin.site.register(models.Student, StudentAdmin)
+
