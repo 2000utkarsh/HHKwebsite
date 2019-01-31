@@ -59,12 +59,20 @@ def get_attendance(request, pk, standard, section, max_attendance, quarter, sess
         if form.is_valid():
             r_no = form.cleaned_data['roll_no']
             student = s_models.Student.objects.get(roll_no=r_no, standard=standard, section=section, school=school)
-            attendance = form.save(commit=False)
-            attendance.student = student
-            attendance.session = session
-            attendance.quarter = quarter
-            attendance.attendance_max = max_attendance
-            attendance.save()
+            try:
+                try_object = models.Attendance.objects.get(student=student, session=session, quarter=quarter):
+
+            except:
+                attendance = form.save(commit=False)
+                attendance.student = student
+                attendance.session = session
+                attendance.quarter = quarter
+                attendance.attendance_max = max_attendance
+                attendance.save()
+            else:
+                try_object.attendance=form.cleaned_data['attendance']
+                try_object.save()
+
             data={'roll_no':form.cleaned_data['roll_no']+1}
             form = forms.get_attendance_form(initial=data)
             return render(request,'academics/get_attendance.html',{'form':form,'pk':pk, 'standard':standard, 'section':section, 'quarter':quarter, 'session':session, 'max_attendance':max_attendance})
