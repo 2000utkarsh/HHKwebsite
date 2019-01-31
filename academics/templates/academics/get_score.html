@@ -1,0 +1,9 @@
+{% extends 'academics/academics_base.html' %}
+
+{% block academics_content %}
+	<form action="{% url 'academics:get_score' pk=pk standard=standard section=section quarter=quarter session=session max_score=max_score subject=subject %}" method="POST">
+		{% csrf_token %}
+		{{form.as_p}}
+		<input type="submit" value="submit">
+	</form>
+{% endblock %}

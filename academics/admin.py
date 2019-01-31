@@ -5,3 +5,5 @@ from .import models
 admin.site.register(models.Attendance)
 
 admin.site.register(models.Score)
+
+admin.site.register(models.Subject)

@@ -8,7 +8,7 @@ class School(models.Model):
 
 	user = models.OneToOneField(User,related_name = 'school', on_delete=models.CASCADE)
 
-	reg_code = models.CharField(max_length=20)
+	reg_code = models.CharField(max_length=20, unique=True)
 
 	name = models.CharField(max_length=167)
 
