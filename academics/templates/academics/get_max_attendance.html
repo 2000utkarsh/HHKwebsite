@@ -1,0 +1,9 @@
+{% extends 'academics/academics_base.html' %}
+
+{% block academics_content %}
+	<form action="{% url 'academics:get_std_sec_maxattendance' pk=user.school.pk %}" method="POST">
+		{% csrf_token %}
+		{{form.as_p}}
+		<input type="submit" value="submit">
+	</form>
+{% endblock %}

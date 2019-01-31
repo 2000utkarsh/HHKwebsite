@@ -2,4 +2,9 @@
 
 {% block content %}
 <h1> Welcome to HHK </h1>
+		{% if user.is_authenticated and user.school %}
+	  			<a href="{% url 'schools:update' pk=user.school.pk  %}">Update</a>
+	  			<a href="{% url 'schools:create_student' pk=user.school.pk  %}">Add A Student</a>
+	  			<a href="{% url 'academics:get_std_sec_maxattendance' pk=user.school.pk  %}">Add Attendance</a>
+	  	{% endif %}
 {% endblock %}

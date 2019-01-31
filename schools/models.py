@@ -38,12 +38,14 @@ class School(models.Model):
 
 class Student(models.Model):
 
-	school = models.ForeignKey('School', related_name='students', on_delete = models.CASCADE)
+	school = models.ForeignKey('schools.School', related_name='students', on_delete = models.CASCADE)
 
 	roll_no = models.PositiveIntegerField()
 
 	name = models.CharField(max_length=50)
 
+	
+	############ MAKE DROPDOWn #############
 	standard = models.CharField(max_length=3)
 
 	section = models.CharField(max_length=2)
