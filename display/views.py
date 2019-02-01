@@ -3,6 +3,7 @@ from django.urls import reverse
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.utils.text import slugify
+import math
 
 
 import json
@@ -231,14 +232,14 @@ def get_analysis_type(request):
 			if type ==slugify('All Students Of a particular standard'):
 				return redirect('display:get_analysis_type2_requirement')
 
-			# if type ==slugify('Section wise of a particular standard'):
-			# 	return redirect()
+			if type ==slugify('Section wise of a particular standard'):
+				return redirect('display:get_analysis_type3_requirement')
+
+			if type ==slugify('School Wise for particular quarter and session'):
+				return redirect('display:get_analysis_type4_requirement')
 
 			# if type ==slugify('Class Wise of a particular school'):
-			# 	return redirect()
-
-			# if type ==slugify('School Wise for particular quarter and session'):
-			# 	return redirect()
+			# 	return redirect('display:get_analysis_type4_requirement')
 
 			# if type == slugify('Quarter wise of a particular school'):
 			# 	return redirect()
@@ -337,3 +338,96 @@ def get_analysis_type2(request, session, quarter, school, standard):
 	jsondata = json.dumps(data)
 
 	return render(request, 'display/graphs/attendance/display_attendance_graph.html',{'jsondata':jsondata, 'dict':dict})
+
+
+def get_analysis_type3_requirement(request):
+	if request.method == 'POST':
+		form = forms.get_analysis_type2_requirement_form(request.POST)
+		if form.is_valid():
+			session = form.cleaned_data['session']
+			quarter = form.cleaned_data['quarter']
+			school = form.cleaned_data['school']
+			standard = form.cleaned_data['standard']
+			school = int(school)
+
+			return redirect('display:get_analysis_type3',session=session, quarter=quarter, school=school, standard=standard, ) 
+
+	else:
+		form = forms.get_analysis_type2_requirement_form()
+
+	return render(request, 'display/graphs/attendance/get_analysis_type3_requirement_form.html',{'form':form})
+
+
+
+def get_analysis_type3(request, session, quarter, school, standard):
+
+	sec_list = [u['section'] for u in s_models.Student.objects.all().filter(school__pk__iexact = school, standard__iexact=standard).values('section')]
+	sec_list = sorted(list(set(sec_list)))
+	stud_attendance = []
+	attendance=0
+	dict={}
+
+	for sec in sec_list:
+		attendance_object_list = ac_models.Attendance.objects.all().filter(student__school__pk__iexact = school, session=session, quarter=quarter, student__standard__iexact=standard, student__section__iexact=sec) 
+		for attendance_object in attendance_object_list:
+			attendance += attendance_object.attendance
+		attendance = attendance/len(attendance_object_list)
+		attendance = round(attendance,3)
+		dict[sec] = attendance
+		stud_attendance.append(attendance)
+	
+
+	data = {
+			"label":sec_list,
+			"value":stud_attendance
+	}
+
+
+	jsondata = json.dumps(data)
+
+	return render(request, 'display/graphs/attendance/display_attendance_graph.html',{'jsondata':jsondata, 'dict':dict})
+
+
+def get_analysis_type4(request, session, quarter):
+
+	school_list = [u['name'] for u in s_models.School.objects.all().filter(verified__iexact=1).values('name')]
+	school_pk_list = [u['pk'] for u in s_models.School.objects.all().filter(verified__iexact=1).values('pk')]	
+	school_list = sorted(list(set(school_list)))
+	stud_attendance = []
+	attendance=0
+	dict={}
+
+	for school in school_pk_list:
+		attendance_object_list = ac_models.Attendance.objects.all().filter(student__school__pk__iexact = school, session=session, quarter=quarter)
+		for attendance_object in attendance_object_list:
+			attendance += attendance_object.attendance
+		attendance = attendance/len(attendance_object_list)
+		attendance = round(attendance,3)
+		dict[school_list[school_pk_list.index(school)]] = attendance
+		stud_attendance.append(attendance)
+	
+
+	data = {
+			"label":school_list,
+			"value":stud_attendance
+	}
+
+
+	jsondata = json.dumps(data)
+
+	return render(request, 'display/graphs/attendance/display_attendance_graph.html',{'jsondata':jsondata, 'dict':dict})
+
+
+def get_analysis_type4_requirement(request):
+	if request.method == 'POST':
+		form = forms.get_analysis_type4_requirement_form(request.POST)
+		if form.is_valid():
+			session = form.cleaned_data['session']
+			quarter = form.cleaned_data['quarter']
+			return redirect('display:get_analysis_type4',session=session, quarter=quarter) 
+
+	else:
+		form = forms.get_analysis_type4_requirement_form()
+
+	return render(request, 'display/graphs/attendance/get_analysis_type4_requirement_form.html',{'form':form})
+

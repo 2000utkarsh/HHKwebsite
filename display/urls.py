@@ -20,6 +20,10 @@ urlpatterns = [
 	path('graph/attendance/get_analysis_type1/<slug:session>/<slug:quarter>/<int:school>/<slug:standard>/<slug:section>/', views.get_analysis_type1, name='get_analysis_type1'),
 	path('graph/attendance/get_analysis_type2_requirement/', views.get_analysis_type2_requirement, name='get_analysis_type2_requirement'),
 	path('graph/attendance/get_analysis_type2/<slug:session>/<slug:quarter>/<int:school>/<slug:standard>/', views.get_analysis_type2, name='get_analysis_type2'),
+	path('graph/attendance/get_analysis_type3_requirement/', views.get_analysis_type3_requirement, name='get_analysis_type3_requirement'),
+	path('graph/attendance/get_analysis_type3/<slug:session>/<slug:quarter>/<int:school>/<slug:standard>/', views.get_analysis_type3, name='get_analysis_type3'),
+	path('graph/attendance/get_analysis_type4_requirement/', views.get_analysis_type4_requirement, name='get_analysis_type4_requirement'),
+	path('graph/attendance/get_analysis_type4/<slug:session>/<slug:quarter>/', views.get_analysis_type4, name='get_analysis_type4'),
 
 ]
 

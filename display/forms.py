@@ -119,8 +119,8 @@ class get_analysis_type_form(forms.Form):
 		(slugify('All Students Of a particular section'), 'All Students Of a particular section'),
 		(slugify('All Students Of a particular standard'), 'All Students Of a particular standard'),
 		(slugify('Section wise of a particular standard'), 'Section wise of a particular standard'),
+		(slugify('School Wise for particular quarter and session'), 'School Wise for particular quarter and session'),		
 		(slugify('Class Wise of a particular school'), 'Class Wise of a particular school'),
-		(slugify('School Wise for particular quarter and session'), 'School Wise for particular quarter and session'),
 		(slugify('Quarter wise of a particular school'), 'Quarter wise of a particular school'),
 		(slugify('Session wise of a particular school'), 'Session wise of a particular school'),
 	]
@@ -169,3 +169,13 @@ class get_analysis_type2_requirement_form(forms.Form):
 	quarter = forms.ChoiceField(choices= QUARTER_CHOICES)
 	school = forms.ChoiceField(choices= SCHOOL_CHOICES)
 	standard = forms.CharField(max_length = 20, required=False, initial="Standard")
+
+
+class get_analysis_type4_requirement_form(forms.Form):
+
+	QUARTER_CHOICES = ((1, 'First'),(2, 'Second'),(3, 'Third'),(4, 'Fourth'),)
+	year = datetime.datetime.now().year
+	SESSION_CHOICES = [(f'{r}-{r+1}',f'{r}-{r+1}') for r in range(year-3,year+1)] 
+
+	session = forms.ChoiceField(choices = SESSION_CHOICES)
+	quarter = forms.ChoiceField(choices= QUARTER_CHOICES)
