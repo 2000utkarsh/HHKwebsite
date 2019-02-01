@@ -6,6 +6,7 @@
 			{% if user.is_authenticated and user.is_superuser %}
 				<a href="{% url 'display:get_display' %}">DISPLAY ATTENDANCE</a>
 				<a href="{% url 'display:get_display_score' %}">DISPLAY SCORE</a>
+				<a href="{% url 'display:get_analysis_type' %}">ATTENDANCE ANALYSIS</a>
 			{% endif %}
 		{% if user.is_authenticated and user.school %}
 			<a href="{% url 'schools:school_detail' pk=user.school.pk username=user.username %}">My School</a>

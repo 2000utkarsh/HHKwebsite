@@ -13,5 +13,13 @@ urlpatterns = [
 	path('get_display_school/', views.get_display_school, name = 'get_display_school'),
 	path('display_attendance_stats/<slug:session>/<int:select_all_session>/<slug:quarter>/<int:select_all_quarter>/<int:school>/<int:select_all_school>/<slug:standard>/<int:select_all_standard>/<slug:section>/<int:select_all_section>/', views.display_attendance_stats, name = 'display_attendance_stats'),
 	path('display_score_stats/<slug:session>/<int:select_all_session>/<slug:quarter>/<int:select_all_quarter>/<int:school>/<int:select_all_school>/<slug:standard>/<int:select_all_standard>/<slug:section>/<int:select_all_section>/<slug:subject>/<int:select_all_subject>/', views.display_score_stats, name = 'display_score_stats'),
+
+
+	path('graph/attendance/get_analysis_type/', views.get_analysis_type,  name='get_analysis_type'),
+	path('graph/attendance/get_analysis_type1_requirement/', views.get_analysis_type1_requirement, name='get_analysis_type1_requirement'),
+	path('graph/attendance/get_analysis_type1/<slug:session>/<slug:quarter>/<int:school>/<slug:standard>/<slug:section>/', views.get_analysis_type1, name='get_analysis_type1'),
+	path('graph/attendance/get_analysis_type2_requirement/', views.get_analysis_type2_requirement, name='get_analysis_type2_requirement'),
+	path('graph/attendance/get_analysis_type2/<slug:session>/<slug:quarter>/<int:school>/<slug:standard>/', views.get_analysis_type2, name='get_analysis_type2'),
+
 ]
 
