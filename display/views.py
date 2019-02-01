@@ -73,7 +73,34 @@ def display_attendance_stats(request, session, select_all_session, quarter, sele
 	return render(request, 'display/display_attendance.html', {'dict':dict})
 
 
+############ FOR SCHOOLS ##################
 
 
+@login_required
+def get_display_school(request):
+	if request.method == 'POST':
+		form = forms.get_display_school_form(request.POST)
+		if form.is_valid():
+			session = form.cleaned_data['session']
+			select_all_session = form.cleaned_data['select_all_session']
+			quarter = form.cleaned_data['quarter']
+			select_all_quarter = form.cleaned_data['select_all_quarter']
+			standard = form.cleaned_data['standard']
+			select_all_standard = form.cleaned_data['select_all_standard']
+			section = form.cleaned_data['section']
+			select_all_section = form.cleaned_data['select_all_section']
+			school = request.user.school.pk
+			select_all_school = 0
+			select_all_session=int(select_all_session)
+			select_all_quarter=int(select_all_quarter)
+			select_all_standard=int(select_all_standard)
+			select_all_section=int(select_all_section)
 
-	
+
+			return redirect('display:display_attendance_stats', session=session, select_all_session=select_all_session, quarter=quarter, select_all_quarter=select_all_quarter, school=school, select_all_school=select_all_school, standard=standard, select_all_standard=select_all_standard,section=section, select_all_section=select_all_section)
+			
+	else:
+		form = forms.get_display_school_form()
+
+	return render(request, 'display/get_display_school_form.html', {'form': form})
+
