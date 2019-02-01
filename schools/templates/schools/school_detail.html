@@ -1,0 +1,17 @@
+{% extends "schools/school_base.html" %}
+
+{% block pre_school %}
+		{% if user.is_authenticated and user.school %}
+	  			<a href="{% url 'schools:update' pk=user.school.pk  %}">Update</a>
+	  			<a href="{% url 'schools:create_student' pk=user.school.pk  %}">Add A Student</a>
+	  			<a href="{% url 'academics:get_std_sec_maxattendance' pk=user.school.pk  %}">Add Attendance</a>
+	  			<a href="{% url 'academics:get_sc_detail' pk=user.school.pk  %}">Add Score</a>
+	  			<a href="{% url 'academics:create_subject' %}">Create Subject</a>
+	  	{% endif %}
+{% endblock %}
+
+{% block school_content %}
+	<p>
+		{{school.name}}<br />{{school.reg_code}}<br />{{school.head}}<br />{{school.address}}<br />{{school.contact}}<br />{{school.user.email}}
+	</p>
+{% endblock %}

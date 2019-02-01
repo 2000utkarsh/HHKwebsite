@@ -4,6 +4,12 @@ import datetime
 from django.utils.text import slugify
 
 
+class SubjectForm(forms.ModelForm):
+
+	class Meta():
+		model = models.Subject
+		fields = ['name']
+
 
 class get_std_sec_maxattendance_form(forms.Form):
 

@@ -1,0 +1,14 @@
+{% extends 'display/display_base.html' %}
+
+{% block display_content %}
+	<h1>Attendance</h1>
+	<ul>
+		{% for key,value in dict.items %}
+			<li>
+				<p>
+					{{key}}:{{value}}
+				</p>
+			</li>
+		{% endfor %}
+	</ul>
+{% endblock %}

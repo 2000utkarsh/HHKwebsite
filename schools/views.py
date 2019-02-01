@@ -36,14 +36,15 @@ class SchoolList(generic.ListView):
         queryset = super().get_queryset()
         return queryset.filter(verified__iexact = 1)
 
-# class EventDetail(LoginRequiredMixin,generic.DetailView):
-#     model = models.Event
 
-#     def get_queryset(self):
-#         queryset = super().get_queryset()
-#         return queryset.filter(
-#             user__username__iexact=self.kwargs.get("username")
-#         )
+
+class SchoolDetail(LoginRequiredMixin,generic.DetailView):
+    model = models.School
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.filter(pk__iexact = self.kwargs.get("pk"))
+
 
 
 class UpdateSchool(generic.UpdateView,LoginRequiredMixin):

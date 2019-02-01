@@ -14,6 +14,18 @@ from . import forms
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
+
+class CreateSubject(LoginRequiredMixin, generic.FormView):
+    template_name = 'academics/create_subject.html'
+    form_class = forms.SubjectForm
+    success_url = reverse_lazy('emails:send_sub')
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
+
+
+
 @login_required
 def create_attendance(request,pk):
     school = get_object_or_404(models.Student,pk=pk)

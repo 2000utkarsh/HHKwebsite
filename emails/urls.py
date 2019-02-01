@@ -6,5 +6,5 @@ app_name = 'emails'
 urlpatterns = [
 				
 				path('send/',views.sendEmail, name='send'),
-				path('send_sub/', views.sendSubEmail, name='sub_send'),
+				path('send_sub/', views.sendSubEmail, name='send_sub'),
 ]
