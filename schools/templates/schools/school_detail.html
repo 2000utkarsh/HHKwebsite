@@ -7,7 +7,8 @@
 	  			<a href="{% url 'academics:get_std_sec_maxattendance' pk=user.school.pk  %}">Add Attendance</a>
 	  			<a href="{% url 'academics:get_sc_detail' pk=user.school.pk  %}">Add Score</a>
 	  			<a href="{% url 'academics:create_subject' %}">Create Subject</a>
-	  			<a href="{% url 'display:get_display_school' %}">DISPLAY</a>
+	  			<a href="{% url 'display:get_display_school' %}">DISPLAY ATTENDANCE</a>
+	  			<a href="{% url 'display:get_display_school_score' %}">DISPLAY SCORE</a>
 	  	{% endif %}
 {% endblock %}
 
