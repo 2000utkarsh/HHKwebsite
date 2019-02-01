@@ -8,6 +8,7 @@ from academics import models as ac_models
 
 # Create your views here.
 ################################ ATTENDANCE FOR ADMIN ####################
+
 @login_required
 def get_display(request):
 	if request.method == 'POST':
@@ -75,7 +76,6 @@ def display_attendance_stats(request, session, select_all_session, quarter, sele
 
 ############ ATTENDANCE FOR SCHOOLS ##################
 
-
 @login_required
 def get_display_school(request):
 	if request.method == 'POST':
@@ -105,7 +105,6 @@ def get_display_school(request):
 	return render(request, 'display/get_display_school_form.html', {'form': form})
 
 ##################################### SCORE FOR ADMIN ################################
-
 
 @login_required
 def get_display_score(request):
