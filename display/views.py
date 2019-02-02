@@ -487,7 +487,6 @@ def get_analysis_type6(request, session, school):
 
 	for quarter in quarter_list:
 		attendance_object_list = ac_models.Attendance.objects.all().filter(student__school__pk__iexact = school, session=session, quarter=quarter) 
-		print(attendance_object_list)
 		for attendance_object in attendance_object_list:
 			attendance += attendance_object.attendance
 		if(len(attendance_object_list)==0):
@@ -547,3 +546,114 @@ def get_analysis_type7(request, school):
 	jsondata = json.dumps(data)
 
 	return render(request, 'display/graphs/attendance/display_attendance_graph.html',{'jsondata':jsondata, 'dict':dict})
+
+
+###################SCHOOL ATTENDANCE ANALYSIS########################
+@login_required
+def get_analysis_type_school(request):
+	if request.method == 'POST':
+		form = forms.get_analysis_type_school_form(request.POST)
+		if form.is_valid():
+			type = form.cleaned_data['type']
+			if type == slugify('All Students Of a particular section'):
+				return redirect('display:get_analysis_type1_requirement_school')
+
+			if type ==slugify('All Students Of a particular standard'):
+				return redirect('display:get_analysis_type2_requirement_school')
+
+			if type ==slugify('Section wise of a particular standard'):
+				return redirect('display:get_analysis_type3_requirement_school')
+
+			if type ==slugify('Class Wise of a particular school'):
+				return redirect('display:get_analysis_type5_requirement_school')
+
+			if type == slugify('Quarter wise of a particular school'):
+				return redirect('display:get_analysis_type6_requirement_school')
+
+			if type ==slugify('Session wise of a particular school'):
+				return redirect('display:get_analysis_type7_requirement_school')
+
+	else:
+		form = forms.get_analysis_type_school_form()
+
+	return render(request, 'display/graphs/attendance/get_analysis_type_school_form.html', {'form': form})
+
+def get_analysis_type1_requirement_school(request):
+	if request.method == 'POST':
+		form = forms.get_analysis_type1_requirement_school_form(request.POST)
+		if form.is_valid():
+			session = form.cleaned_data['session']
+			quarter = form.cleaned_data['quarter']
+			standard = form.cleaned_data['standard']
+			section = form.cleaned_data['section']
+			school = request.user.school.pk
+
+			return redirect('display:get_analysis_type1',session=session, quarter=quarter, school=school, standard=standard, section=section ) 
+
+	else:
+		form = forms.get_analysis_type1_requirement_school_form()
+
+	return render(request, 'display/graphs/attendance/get_analysis_type1_requirement_school_form.html',{'form':form})
+
+def get_analysis_type2_requirement_school(request):
+	if request.method == 'POST':
+		form = forms.get_analysis_type2_requirement_school_form(request.POST)
+		if form.is_valid():
+			session = form.cleaned_data['session']
+			quarter = form.cleaned_data['quarter']
+			standard = form.cleaned_data['standard']
+			school = request.user.school.pk
+
+			return redirect('display:get_analysis_type2',session=session, quarter=quarter, school=school, standard=standard, ) 
+
+	else:
+		form = forms.get_analysis_type2_requirement_school_form()
+
+	return render(request, 'display/graphs/attendance/get_analysis_type2_requirement_school_form.html',{'form':form})
+
+def get_analysis_type3_requirement_school(request):
+	if request.method == 'POST':
+		form = forms.get_analysis_type2_requirement_school_form(request.POST)
+		if form.is_valid():
+			session = form.cleaned_data['session']
+			quarter = form.cleaned_data['quarter']
+			standard = form.cleaned_data['standard']
+			school = request.user.school.pk
+
+			return redirect('display:get_analysis_type3',session=session, quarter=quarter, school=school, standard=standard, ) 
+
+	else:
+		form = forms.get_analysis_type2_requirement_school_form()
+
+	return render(request, 'display/graphs/attendance/get_analysis_type3_requirement_school_form.html',{'form':form})
+
+def get_analysis_type5_requirement_school(request):
+	if request.method == 'POST':
+		form = forms.get_analysis_type5_requirement_school_form(request.POST)
+		if form.is_valid():
+			session = form.cleaned_data['session']
+			quarter = form.cleaned_data['quarter']
+			school = request.user.school.pk
+			return redirect('display:get_analysis_type5',session=session, quarter=quarter, school=school) 
+
+	else:
+		form = forms.get_analysis_type5_requirement_school_form()
+
+	return render(request, 'display/graphs/attendance/get_analysis_type5_requirement_school_form.html',{'form':form})
+
+def get_analysis_type6_requirement_school(request):
+	if request.method == 'POST':
+		form = forms.get_analysis_type6_requirement_school_form(request.POST)
+		if form.is_valid():
+			session = form.cleaned_data['session']
+			school = request.user.school.pk
+			return redirect('display:get_analysis_type6',session=session, school=school) 
+
+	else:
+		form = forms.get_analysis_type6_requirement_school_form()
+
+	return render(request, 'display/graphs/attendance/get_analysis_type6_requirement_school_form.html',{'form':form})
+
+def get_analysis_type7_requirement_school(request):
+	school = request.user.school.pk
+	return redirect('display:get_analysis_type7', school=school) 

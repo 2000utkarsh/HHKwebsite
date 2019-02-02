@@ -1,0 +1,9 @@
+{% extends 'display/display_base.html' %}
+
+{% block display_content %}
+	<form method="POST" action="{% url 'display:get_analysis_type2_requirement_school' %}">
+		{% csrf_token %}
+			{{form.as_p}}
+			<input type="submit" value="Submit">
+	</form>
+{% endblock %}

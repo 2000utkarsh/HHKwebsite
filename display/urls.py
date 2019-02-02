@@ -30,5 +30,15 @@ urlpatterns = [
 	path('graph/attendance/get_analysis_type6/<slug:session>/<int:school>/', views.get_analysis_type6, name='get_analysis_type6'),
 	path('graph/attendance/get_analysis_type7_requirement/', views.get_analysis_type7_requirement, name='get_analysis_type7_requirement'),
 	path('graph/attendance/get_analysis_type7/<int:school>/', views.get_analysis_type7, name='get_analysis_type7'),
+
+
+	path('graph/attendance/get_analysis_type_school/', views.get_analysis_type_school,  name='get_analysis_type_school'),
+	path('graph/attendance/get_analysis_type1_requirement_school/', views.get_analysis_type1_requirement_school, name='get_analysis_type1_requirement_school'),
+	path('graph/attendance/get_analysis_type2_requirement_school/', views.get_analysis_type2_requirement_school, name='get_analysis_type2_requirement_school'),
+	path('graph/attendance/get_analysis_type3_requirement_school/', views.get_analysis_type3_requirement_school, name='get_analysis_type3_requirement_school'),
+	path('graph/attendance/get_analysis_type5_requirement_school/', views.get_analysis_type5_requirement_school, name='get_analysis_type5_requirement_school'),
+	path('graph/attendance/get_analysis_type6_requirement_school/', views.get_analysis_type6_requirement_school, name='get_analysis_type6_requirement_school'),
+	path('graph/attendance/get_analysis_type7_requirement_school/', views.get_analysis_type7_requirement_school, name='get_analysis_type7_requirement_school'),
+
 ]
 
