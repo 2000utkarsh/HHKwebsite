@@ -54,6 +54,19 @@ urlpatterns = [
 	path('graph/score/get_score_analysis_type4_requirement/', views.get_score_analysis_type4_requirement, name='get_score_analysis_type4_requirement'),
 	path('graph/score/get_score_analysis_type5/<slug:session>/<slug:quarter>/<int:school>/<slug:subject>/', views.get_score_analysis_type5, name='get_score_analysis_type5'),
 	path('graph/score/get_score_analysis_type5_requirement/', views.get_score_analysis_type5_requirement, name='get_score_analysis_type5_requirement'),
+	path('graph/score/get_score_analysis_type6/<slug:session>/<int:school>/<slug:subject>/', views.get_score_analysis_type6, name='get_score_analysis_type6'),
+	path('graph/score/get_score_analysis_type6_requirement/', views.get_score_analysis_type6_requirement, name='get_score_analysis_type6_requirement'),
+	path('graph/score/get_score_analysis_type7/<int:school>/<slug:subject>/', views.get_score_analysis_type7, name='get_score_analysis_type7'),
+	path('graph/score/get_score_analysis_type7_requirement/', views.get_score_analysis_type7_requirement, name='get_score_analysis_type7_requirement'),
+
+
+	path('graph/score/get_score_analysis_type_school/', views.get_score_analysis_type_school,  name='get_score_analysis_type_school'),
+	path('graph/score/get_score_analysis_type1_requirement_school/', views.get_score_analysis_type1_requirement_school, name='get_score_analysis_type1_requirement_school'),
+	path('graph/score/get_score_analysis_type2_requirement_school/', views.get_score_analysis_type2_requirement_school, name='get_score_analysis_type2_requirement_school'),
+	path('graph/score/get_score_analysis_type3_requirement_school/', views.get_score_analysis_type3_requirement_school, name='get_score_analysis_type3_requirement_school'),
+	path('graph/score/get_score_analysis_type5_requirement_school/', views.get_score_analysis_type5_requirement_school, name='get_score_analysis_type5_requirement_school'),
+	path('graph/score/get_score_analysis_type6_requirement_school/', views.get_score_analysis_type6_requirement_school, name='get_score_analysis_type6_requirement_school'),
+	path('graph/score/get_score_analysis_type7_requirement_school/', views.get_score_analysis_type7_requirement_school, name='get_score_analysis_type7_requirement_school'),
 
 ]
 

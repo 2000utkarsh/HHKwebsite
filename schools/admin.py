@@ -10,7 +10,7 @@ class SchoolAdmin(admin.ModelAdmin):
 
 
 class StudentAdmin(admin.ModelAdmin):
-	list_display = ['roll_no', 'name', 'standard', 'section', 'school']
+	list_display = ['pk','roll_no', 'name', 'standard', 'section', 'school']
 	list_filter = ['standard', 'section', 'school']
 
 
