@@ -399,13 +399,13 @@ def get_analysis_type4(request, session, quarter):
 
 	school_list = [u['name'] for u in s_models.School.objects.all().filter(verified__iexact=1).values('name')]
 	school_pk_list = [u['pk'] for u in s_models.School.objects.all().filter(verified__iexact=1).values('pk')]	
-	school_list = sorted(list(set(school_list)))
 	stud_attendance = []
 	attendance=0
 	dict={}
 
 	for school in school_pk_list:
-		attendance_object_list = ac_models.Attendance.objects.all().filter(student__school__pk__iexact = school, session=session, quarter=quarter)
+		attendance=0
+		attendance_object_list = ac_models.Attendance.objects.all().filter(student__school__pk__iexact = school, session__iexact=session, quarter__iexact=quarter)
 		for attendance_object in attendance_object_list:
 			attendance += attendance_object.attendance
 		attendance = attendance/len(attendance_object_list)
@@ -683,8 +683,8 @@ def get_score_analysis_type(request):
 			if type ==slugify('Section wise of a particular standard'):
 				return redirect('display:get_score_analysis_type3_requirement')
 
-			# if type ==slugify('School Wise for particular quarter and session'):
-			# 	return redirect('display:get_score_analysis_type4_requirement')
+			if type ==slugify('School Wise for particular quarter and session'):
+				return redirect('display:get_score_analysis_type4_requirement')
 
 			# if type ==slugify('Class Wise of a particular school'):
 			# 	return redirect('display:get_score_analysis_type5_requirement')
@@ -882,3 +882,68 @@ def get_score_analysis_type3(request, session, quarter, school, standard, subjec
 	jsondata = json.dumps(data)
 
 	return render(request, 'display/graphs/score/display_score_graph.html',{'jsondata':jsondata, 'dict':dict})
+
+
+def get_score_analysis_type4_requirement(request):
+	if request.method == 'POST':
+		form = forms.get_score_analysis_type4_requirement_form(request.POST)
+		if form.is_valid():
+			session = form.cleaned_data['session']
+			quarter = form.cleaned_data['quarter']
+			subject = form.cleaned_data['subject']
+			return redirect('display:get_score_analysis_type4',session=session, quarter=quarter, subject=subject) 
+
+	else:
+		form = forms.get_score_analysis_type4_requirement_form()
+
+	return render(request, 'display/graphs/score/get_score_analysis_type4_requirement_form.html',{'form':form})
+
+def get_score_analysis_type4(request, session, quarter, subject):
+
+	school_list = [u['name'] for u in s_models.School.objects.all().filter(verified__iexact=1).values('name')]
+	school_pk_list = [u['pk'] for u in s_models.School.objects.all().filter(verified__iexact=1).values('pk')]	
+	stud_score = []
+	score=0
+	dict={}
+
+	for school in school_pk_list:
+		score_sum_list=[]
+		score=0
+		if subject != 'aggregate':
+			score_object_list = ac_models.Score.objects.all().filter(student__school__pk__iexact = school, session__iexact=session, quarter__iexact=quarter, subject__iexact=subject)
+			for score_object in score_object_list:
+				score += score_object.score
+			score = score/len(score_object_list)
+			score = round(score,3)
+			dict[school_list[school_pk_list.index(school)]] = score
+			stud_score.append(score)
+		else:
+			sub_list = [u['subject'] for u in ac_models.Score.objects.all().filter(student__school__pk__iexact = school).values('subject')]
+			sub_list = sorted(list(set(sub_list)))
+			for sub in sub_list:
+				score_sum=0
+				stud_score_object_list = ac_models.Score.objects.all().filter(student__school__pk__iexact = school, session__iexact=session, quarter__iexact=quarter, subject__iexact=sub)
+				for stud_score_object in stud_score_object_list:
+					score_sum += stud_score_object.score
+				if len(stud_score_object_list)==0:
+					score_sum=0
+				else:
+					score_sum = score_sum/len(stud_score_object_list)
+				score_sum_list.append(score_sum)
+			if len(score_sum_list)==0:
+				stud_score.append(0)
+			else:
+				stud_score.append(round(mean(score_sum_list),3))
+				dict[school_list[school_pk_list.index(school)]] = round(mean(score_sum_list),3)
+
+	data = {
+			"label":school_list,
+			"value":stud_score
+	}
+
+
+	jsondata = json.dumps(data)
+
+	return render(request, 'display/graphs/score/display_score_graph.html',{'jsondata':jsondata, 'dict':dict})
+
+	

@@ -346,3 +346,21 @@ class get_score_analysis_type2_requirement_form(forms.Form):
 	school = forms.ChoiceField(choices= SCHOOL_CHOICES)
 	standard = forms.CharField(max_length = 20, required=False, initial="Standard")
 	subject = forms.ChoiceField(choices=SUBJECT_CHOICES)
+
+class get_score_analysis_type4_requirement_form(forms.Form):
+
+	QUARTER_CHOICES = ((1, 'First'),(2, 'Second'),(3, 'Third'),(4, 'Fourth'),)
+	year = datetime.datetime.now().year
+	SESSION_CHOICES = [(f'{r}-{r+1}',f'{r}-{r+1}') for r in range(year-3,year+1)] 
+
+	subject_name_list = [u['name'] for u in ac_models.Subject.objects.all().values('name')]
+
+	SUBJECT_CHOICES = [('aggregate', 'Aggregate')]
+
+	for i in range(0,len(subject_name_list)):
+		SUBJECT_CHOICES.append((slugify(subject_name_list[i]), subject_name_list[i]))
+
+	session = forms.ChoiceField(choices = SESSION_CHOICES)
+	quarter = forms.ChoiceField(choices= QUARTER_CHOICES)
+	subject = forms.ChoiceField(choices=SUBJECT_CHOICES)
+
