@@ -48,6 +48,8 @@ urlpatterns = [
 	path('graph/score/get_score_analysis_type1_requirement/', views.get_score_analysis_type1_requirement, name='get_score_analysis_type1_requirement'),
 	path('graph/score/get_score_analysis_type2/<slug:session>/<slug:quarter>/<int:school>/<slug:standard>/<slug:subject>/', views.get_score_analysis_type2, name='get_score_analysis_type2'),
 	path('graph/score/get_score_analysis_type2_requirement/', views.get_score_analysis_type2_requirement, name='get_score_analysis_type2_requirement'),
+	path('graph/score/get_score_analysis_type3/<slug:session>/<slug:quarter>/<int:school>/<slug:standard>/<slug:subject>/', views.get_score_analysis_type3, name='get_score_analysis_type3'),
+	path('graph/score/get_score_analysis_type3_requirement/', views.get_score_analysis_type3_requirement, name='get_score_analysis_type3_requirement'),
 
 ]
 
