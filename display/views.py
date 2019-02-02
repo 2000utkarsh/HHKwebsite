@@ -238,14 +238,14 @@ def get_analysis_type(request):
 			if type ==slugify('School Wise for particular quarter and session'):
 				return redirect('display:get_analysis_type4_requirement')
 
-			# if type ==slugify('Class Wise of a particular school'):
-			# 	return redirect('display:get_analysis_type4_requirement')
+			if type ==slugify('Class Wise of a particular school'):
+				return redirect('display:get_analysis_type5_requirement')
 
-			# if type == slugify('Quarter wise of a particular school'):
-			# 	return redirect()
+			if type == slugify('Quarter wise of a particular school'):
+				return redirect('display:get_analysis_type6_requirement')
 
-			# if type ==slugify('Session wise of a particular school'):
-			# 	return redirect()
+			if type ==slugify('Session wise of a particular school'):
+				return redirect('display:get_analysis_type7_requirement')
 
 	else:
 		form = forms.get_analysis_type_form()
@@ -269,8 +269,6 @@ def get_analysis_type1_requirement(request):
 		form = forms.get_analysis_type1_requirement_form()
 
 	return render(request, 'display/graphs/attendance/get_analysis_type1_requirement_form.html',{'form':form})
-
-
 def get_analysis_type1(request, session, quarter, school, standard, section):
 
 	stud_list = [u['roll_no'] for u in s_models.Student.objects.all().filter(school__pk__iexact = school, standard__iexact=standard, section__iexact=section).values('roll_no')]
@@ -307,8 +305,6 @@ def get_analysis_type2_requirement(request):
 		form = forms.get_analysis_type2_requirement_form()
 
 	return render(request, 'display/graphs/attendance/get_analysis_type2_requirement_form.html',{'form':form})
-
-
 def get_analysis_type2(request, session, quarter, school, standard):
 
 	sec_list = [u['section'] for u in s_models.Student.objects.all().filter(school__pk__iexact = school, standard__iexact=standard).values('section')]
@@ -356,9 +352,6 @@ def get_analysis_type3_requirement(request):
 		form = forms.get_analysis_type2_requirement_form()
 
 	return render(request, 'display/graphs/attendance/get_analysis_type3_requirement_form.html',{'form':form})
-
-
-
 def get_analysis_type3(request, session, quarter, school, standard):
 
 	sec_list = [u['section'] for u in s_models.Student.objects.all().filter(school__pk__iexact = school, standard__iexact=standard).values('section')]
@@ -388,6 +381,18 @@ def get_analysis_type3(request, session, quarter, school, standard):
 	return render(request, 'display/graphs/attendance/display_attendance_graph.html',{'jsondata':jsondata, 'dict':dict})
 
 
+def get_analysis_type4_requirement(request):
+	if request.method == 'POST':
+		form = forms.get_analysis_type4_requirement_form(request.POST)
+		if form.is_valid():
+			session = form.cleaned_data['session']
+			quarter = form.cleaned_data['quarter']
+			return redirect('display:get_analysis_type4',session=session, quarter=quarter) 
+
+	else:
+		form = forms.get_analysis_type4_requirement_form()
+
+	return render(request, 'display/graphs/attendance/get_analysis_type4_requirement_form.html',{'form':form})
 def get_analysis_type4(request, session, quarter):
 
 	school_list = [u['name'] for u in s_models.School.objects.all().filter(verified__iexact=1).values('name')]
@@ -418,16 +423,127 @@ def get_analysis_type4(request, session, quarter):
 	return render(request, 'display/graphs/attendance/display_attendance_graph.html',{'jsondata':jsondata, 'dict':dict})
 
 
-def get_analysis_type4_requirement(request):
+def get_analysis_type5_requirement(request):
 	if request.method == 'POST':
-		form = forms.get_analysis_type4_requirement_form(request.POST)
+		form = forms.get_analysis_type5_requirement_form(request.POST)
 		if form.is_valid():
 			session = form.cleaned_data['session']
 			quarter = form.cleaned_data['quarter']
-			return redirect('display:get_analysis_type4',session=session, quarter=quarter) 
+			school = form.cleaned_data['school']
+			return redirect('display:get_analysis_type5',session=session, quarter=quarter, school=school) 
 
 	else:
-		form = forms.get_analysis_type4_requirement_form()
+		form = forms.get_analysis_type5_requirement_form()
 
-	return render(request, 'display/graphs/attendance/get_analysis_type4_requirement_form.html',{'form':form})
+	return render(request, 'display/graphs/attendance/get_analysis_type5_requirement_form.html',{'form':form})
+def get_analysis_type5(request, session, quarter, school):
 
+	std_list = [u['standard'] for u in s_models.Student.objects.all().filter(school__pk__iexact = school).values('standard')]
+	std_list = sorted(list(set(std_list)))
+	stud_attendance = []
+	attendance=0
+	dict={}
+
+	for std in std_list:
+		attendance_object_list = ac_models.Attendance.objects.all().filter(student__school__pk__iexact = school, session=session, quarter=quarter, student__standard__iexact=std) 
+		for attendance_object in attendance_object_list:
+			attendance += attendance_object.attendance
+		attendance = attendance/len(attendance_object_list)
+		attendance = round(attendance,3)
+		dict[std] = attendance
+		stud_attendance.append(attendance)
+	
+
+	data = {
+			"label":std_list,
+			"value":stud_attendance
+	}
+
+
+	jsondata = json.dumps(data)
+
+	return render(request, 'display/graphs/attendance/display_attendance_graph.html',{'jsondata':jsondata, 'dict':dict})
+
+def get_analysis_type6_requirement(request):
+	if request.method == 'POST':
+		form = forms.get_analysis_type6_requirement_form(request.POST)
+		if form.is_valid():
+			session = form.cleaned_data['session']
+			school = form.cleaned_data['school']
+			return redirect('display:get_analysis_type6',session=session, school=school) 
+
+	else:
+		form = forms.get_analysis_type6_requirement_form()
+
+	return render(request, 'display/graphs/attendance/get_analysis_type6_requirement_form.html',{'form':form})
+def get_analysis_type6(request, session, school):
+
+	quarter_list = ['1','2','3','4']
+	quarter_name_list = ['First','Second','Third','Fourth']
+	
+	stud_attendance = []
+	attendance=0
+	dict={}
+
+	for quarter in quarter_list:
+		attendance_object_list = ac_models.Attendance.objects.all().filter(student__school__pk__iexact = school, session=session, quarter=quarter) 
+		print(attendance_object_list)
+		for attendance_object in attendance_object_list:
+			attendance += attendance_object.attendance
+		if(len(attendance_object_list)==0):
+			attendance=0
+		else:
+			attendance = attendance/len(attendance_object_list)
+		attendance = round(attendance,3)
+		dict[quarter] = attendance
+		stud_attendance.append(attendance)
+	
+
+	data = {
+			"label":quarter_name_list,
+			"value":stud_attendance
+	}
+
+
+	jsondata = json.dumps(data)
+
+	return render(request, 'display/graphs/attendance/display_attendance_graph.html',{'jsondata':jsondata, 'dict':dict})
+
+def get_analysis_type7_requirement(request):
+	if request.method == 'POST':
+		form = forms.get_analysis_type7_requirement_form(request.POST)
+		if form.is_valid():
+			school = form.cleaned_data['school']
+			return redirect('display:get_analysis_type7', school=school) 
+
+	else:
+		form = forms.get_analysis_type7_requirement_form()
+
+	return render(request, 'display/graphs/attendance/get_analysis_type7_requirement_form.html',{'form':form})
+def get_analysis_type7(request, school):
+
+	ses_list = [u['session'] for u in ac_models.Attendance.objects.all().filter(student__school__pk__iexact = school).values('session')]
+	ses_list = sorted(list(set(ses_list)))
+	stud_attendance = []
+	attendance=0
+	dict={}
+
+	for ses in ses_list:
+		attendance_object_list = ac_models.Attendance.objects.all().filter(student__school__pk__iexact = school, session=ses) 
+		for attendance_object in attendance_object_list:
+			attendance += attendance_object.attendance
+		attendance = attendance/len(attendance_object_list)
+		attendance = round(attendance,3)
+		dict[ses] = attendance
+		stud_attendance.append(attendance)
+	
+
+	data = {
+			"label":ses_list,
+			"value":stud_attendance
+	}
+
+
+	jsondata = json.dumps(data)
+
+	return render(request, 'display/graphs/attendance/display_attendance_graph.html',{'jsondata':jsondata, 'dict':dict})

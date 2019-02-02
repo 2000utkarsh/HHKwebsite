@@ -24,6 +24,11 @@ urlpatterns = [
 	path('graph/attendance/get_analysis_type3/<slug:session>/<slug:quarter>/<int:school>/<slug:standard>/', views.get_analysis_type3, name='get_analysis_type3'),
 	path('graph/attendance/get_analysis_type4_requirement/', views.get_analysis_type4_requirement, name='get_analysis_type4_requirement'),
 	path('graph/attendance/get_analysis_type4/<slug:session>/<slug:quarter>/', views.get_analysis_type4, name='get_analysis_type4'),
-
+	path('graph/attendance/get_analysis_type5_requirement/', views.get_analysis_type5_requirement, name='get_analysis_type5_requirement'),
+	path('graph/attendance/get_analysis_type5/<slug:session>/<slug:quarter>/<int:school>/', views.get_analysis_type5, name='get_analysis_type5'),
+	path('graph/attendance/get_analysis_type6_requirement/', views.get_analysis_type6_requirement, name='get_analysis_type6_requirement'),
+	path('graph/attendance/get_analysis_type6/<slug:session>/<int:school>/', views.get_analysis_type6, name='get_analysis_type6'),
+	path('graph/attendance/get_analysis_type7_requirement/', views.get_analysis_type7_requirement, name='get_analysis_type7_requirement'),
+	path('graph/attendance/get_analysis_type7/<int:school>/', views.get_analysis_type7, name='get_analysis_type7'),
 ]
 
