@@ -686,8 +686,8 @@ def get_score_analysis_type(request):
 			if type ==slugify('School Wise for particular quarter and session'):
 				return redirect('display:get_score_analysis_type4_requirement')
 
-			# if type ==slugify('Class Wise of a particular school'):
-			# 	return redirect('display:get_score_analysis_type5_requirement')
+			if type ==slugify('Class Wise of a particular school'):
+				return redirect('display:get_score_analysis_type5_requirement')
 
 			# if type == slugify('Quarter wise of a particular school'):
 			# 	return redirect('display:get_score_analysis_type6_requirement')
@@ -897,7 +897,6 @@ def get_score_analysis_type4_requirement(request):
 		form = forms.get_score_analysis_type4_requirement_form()
 
 	return render(request, 'display/graphs/score/get_score_analysis_type4_requirement_form.html',{'form':form})
-
 def get_score_analysis_type4(request, session, quarter, subject):
 
 	school_list = [u['name'] for u in s_models.School.objects.all().filter(verified__iexact=1).values('name')]
@@ -946,4 +945,68 @@ def get_score_analysis_type4(request, session, quarter, subject):
 
 	return render(request, 'display/graphs/score/display_score_graph.html',{'jsondata':jsondata, 'dict':dict})
 
-	
+
+
+def get_score_analysis_type5_requirement(request):
+	if request.method == 'POST':
+		form = forms.get_score_analysis_type5_requirement_form(request.POST)
+		if form.is_valid():
+			session = form.cleaned_data['session']
+			quarter = form.cleaned_data['quarter']
+			school = form.cleaned_data['school']
+			subject = form.cleaned_data['subject']
+			return redirect('display:get_score_analysis_type5',session=session, quarter=quarter, school=school, subject=subject) 
+
+	else:
+		form = forms.get_score_analysis_type5_requirement_form()
+
+	return render(request, 'display/graphs/score/get_score_analysis_type5_requirement_form.html',{'form':form})
+def get_score_analysis_type5(request, session, quarter,school, subject):
+	std_list = [u['standard'] for u in s_models.Student.objects.all().filter(school__pk__iexact = school).values('standard')]
+	std_list = sorted(list(set(std_list)))
+	stud_score = []
+
+	dict={}
+
+	for std in std_list:
+		score_sum_list=[]
+		score=0
+		if subject != 'aggregate':
+			score_object_list = ac_models.Score.objects.all().filter(student__school__pk__iexact = school, session__iexact=session, quarter__iexact=quarter, subject__iexact=subject, student__standard__iexact=std)
+			for score_object in score_object_list:
+				score += score_object.score
+			score = score/len(score_object_list)
+			score = round(score,3)
+			dict[std] = score
+			stud_score.append(score)
+		else:
+			sub_list = [u['subject'] for u in ac_models.Score.objects.all().filter(student__school__pk__iexact = school, student__standard__iexact=std).values('subject')]
+			sub_list = sorted(list(set(sub_list)))
+			for sub in sub_list:
+				score_sum=0
+				stud_score_object_list = ac_models.Score.objects.all().filter(student__school__pk__iexact = school, session__iexact=session, quarter__iexact=quarter, subject__iexact=sub, student__standard__iexact=std)
+				for stud_score_object in stud_score_object_list:
+					score_sum += stud_score_object.score
+				if len(stud_score_object_list)==0:
+					score_sum=0
+				else:
+					score_sum = score_sum/len(stud_score_object_list)
+				score_sum_list.append(score_sum)
+			if len(score_sum_list)==0:
+				stud_score.append(0)
+			else:
+				stud_score.append(round(mean(score_sum_list),3))
+				dict[std] = round(mean(score_sum_list),3)
+
+	data = {
+			"label":std_list,
+			"value":stud_score
+	}
+
+
+	jsondata = json.dumps(data)
+
+	return render(request, 'display/graphs/score/display_score_graph.html',{'jsondata':jsondata, 'dict':dict})
+
+
+

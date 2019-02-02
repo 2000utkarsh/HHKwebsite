@@ -52,6 +52,8 @@ urlpatterns = [
 	path('graph/score/get_score_analysis_type3_requirement/', views.get_score_analysis_type3_requirement, name='get_score_analysis_type3_requirement'),
 	path('graph/score/get_score_analysis_type4/<slug:session>/<slug:quarter>/<slug:subject>/', views.get_score_analysis_type4, name='get_score_analysis_type4'),
 	path('graph/score/get_score_analysis_type4_requirement/', views.get_score_analysis_type4_requirement, name='get_score_analysis_type4_requirement'),
+	path('graph/score/get_score_analysis_type5/<slug:session>/<slug:quarter>/<int:school>/<slug:subject>/', views.get_score_analysis_type5, name='get_score_analysis_type5'),
+	path('graph/score/get_score_analysis_type5_requirement/', views.get_score_analysis_type5_requirement, name='get_score_analysis_type5_requirement'),
 
 ]
 
