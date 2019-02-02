@@ -40,5 +40,14 @@ urlpatterns = [
 	path('graph/attendance/get_analysis_type6_requirement_school/', views.get_analysis_type6_requirement_school, name='get_analysis_type6_requirement_school'),
 	path('graph/attendance/get_analysis_type7_requirement_school/', views.get_analysis_type7_requirement_school, name='get_analysis_type7_requirement_school'),
 
+
+
+	
+	path('graph/score/get_score_analysis_type/', views.get_score_analysis_type, name = 'get_score_analysis_type'),
+	path('graph/score/get_score_analysis_type1/<slug:session>/<slug:quarter>/<int:school>/<slug:standard>/<slug:section>/<slug:subject>/', views.get_score_analysis_type1, name='get_score_analysis_type1'),
+	path('graph/score/get_score_analysis_type1_requirement/', views.get_score_analysis_type1_requirement, name='get_score_analysis_type1_requirement'),
+	path('graph/score/get_score_analysis_type2/<slug:session>/<slug:quarter>/<int:school>/<slug:standard>/<slug:subject>/', views.get_score_analysis_type2, name='get_score_analysis_type2'),
+	path('graph/score/get_score_analysis_type2_requirement/', views.get_score_analysis_type2_requirement, name='get_score_analysis_type2_requirement'),
+
 ]
 
